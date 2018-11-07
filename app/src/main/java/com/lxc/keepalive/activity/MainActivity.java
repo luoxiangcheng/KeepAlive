@@ -1,4 +1,4 @@
-package com.lxc.keepalive;
+package com.lxc.keepalive.activity;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.lxc.keepalive.R;
 import com.lxc.keepalive.services.MyService1;
 import com.lxc.keepalive.services.MyService2;
 import com.lxc.keepalive.utils.AppUtil;
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Context mContext;
 
     private Button mBtnToMainActivity, mBtnToSpecialActivity, mBtnStartService, mBtnStopService,
-            mBtnBindService, mBtnUnbindService, mBtnGetData, mBtnToMessenger;
+            mBtnBindService, mBtnUnbindService, mBtnGetData, mBtnToMessenger,mBtnAidl;
 
     private MyService2 mService2;
     private ServiceConnection mServiceConnection;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtnUnbindService = findViewById(R.id.btn_unbind_service);
         mBtnGetData = findViewById(R.id.btn_get_data);
         mBtnToMessenger = findViewById(R.id.btn_to_messenger);
+        mBtnAidl = findViewById(R.id.btn_aidl);
 
         mBtnToMainActivity.setOnClickListener(this);
         mBtnToSpecialActivity.setOnClickListener(this);
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mBtnUnbindService.setOnClickListener(this);
         mBtnGetData.setOnClickListener(this);
         mBtnToMessenger.setOnClickListener(this);
+        mBtnAidl.setOnClickListener(this);
 
         mServiceConnection = new ServiceConnection() {
             /**
@@ -147,6 +150,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_to_messenger:
                 startActivity(new Intent(mContext, MessengerActivity.class));
+                break;
+
+            case R.id.btn_aidl:
+                startActivity(new Intent(mContext, AIDLActivity.class));
                 break;
         }
     }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.lxc.keepalive.activity.MessengerActivity">
+    tools:context="com.lxc.keepalive.activity.AIDLActivity">
 
     <Button
         android:id="@+id/btn_bind"
@@ -19,9 +19,9 @@
         android:text="解绑服务" />
 
     <Button
-        android:id="@+id/btn_send_msg"
+        android:id="@+id/btn_calculate"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="发送消息" />
+        android:text="计算" />
 
 </LinearLayout>

@@ -1,4 +1,4 @@
-package com.lxc.keepalive;
+package com.lxc.keepalive.activity;
 
 import android.app.Service;
 import android.content.ComponentName;
@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.lxc.keepalive.R;
 import com.lxc.keepalive.services.MyService3;
 
 public class MessengerActivity extends AppCompatActivity implements View.OnClickListener {

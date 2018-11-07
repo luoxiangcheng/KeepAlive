@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -19,9 +19,13 @@
 
         <service android:name=".services.MyService1" />
         <service android:name=".services.MyService2" />
-        <service android:name=".services.MyService3" android:process=":remote"/>
+        <service
+            android:name=".services.MyService3"
+            android:process=":remote" />
+        <service android:name=".services.MyService4" />
 
-        <activity android:name=".MessengerActivity"></activity>
+        <activity android:name=".activity.MessengerActivity" />
+        <activity android:name=".activity.AIDLActivity"></activity>
     </application>
 
 </manifest>

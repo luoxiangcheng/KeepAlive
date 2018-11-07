@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.lxc.keepalive.MainActivity">
+    tools:context="com.lxc.keepalive.activity.MainActivity">
 
     <Button
         android:id="@+id/btn_to_main_activity"
@@ -53,5 +53,11 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="使用Messenger方式绑定服务" />
+
+    <Button
+        android:id="@+id/btn_aidl"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="AIDL" />
 
 </LinearLayout>
