@@ -5,10 +5,9 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
-import android.os.IBinder;
-import android.os.RemoteException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -73,6 +72,7 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_unbind:
                 if (mBound) {
                     mContext.unbindService(mServiceConnection);
+                    mPersonManager = null;
                     mBound = false;
                 }
                 break;
@@ -83,10 +83,13 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
                     return;
                 }
 
+                // 注意：只要连接过服务一次，mPersonManager不为null，
+                // 那么即使调用unbindService(前提不把mPersonManager置为null，并且上面的mBound判断条件去掉)，
+                // 那么下面代码还能继续取到值
                 int result = 0;
                 try {
                     result = mPersonManager.add(1, 3);
-                } catch (RemoteException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 Log.d(TAG, "计算结果为：" + result);

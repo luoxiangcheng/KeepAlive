@@ -5,13 +5,12 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.os.Messenger;
-import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -92,6 +91,7 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
             case R.id.btn_unbind:
                 if (mBound) {
                     mContext.unbindService(mServiceConnection);
+                    mMessenger = null;
                     mBound = false;
                 }
                 break;
@@ -102,13 +102,16 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
                     return;
                 }
 
+                // 注意：只要连接过服务一次，mMessenger不为null，
+                // 那么即使调用unbindService(前提不把mMessenger置为null，并且上面的mBound判断条件去掉)，
+                // 那么下面代码还能正常通信
                 // 创建与服务端交互的消息实体Message
                 Message message = Message.obtain(null, MyService3.MSG_SAY_HELLO, 0, 0);
                 // 把接收服务器端的回复的Messenger通过Message的replyTo参数传递给服务端
                 message.replyTo = mReplyMessenger;
                 try {
                     mMessenger.send(message);
-                } catch (RemoteException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 break;
