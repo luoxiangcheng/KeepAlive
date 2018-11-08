@@ -81,6 +81,14 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 注意：通过绑定服务方式，在页面销毁时需判断解绑，
+        // 否则会报android.app.ServiceConnectionLeaked错误，类似于Dialog
+        unBind();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_bind:
@@ -89,11 +97,7 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
                 break;
 
             case R.id.btn_unbind:
-                if (mBound) {
-                    mContext.unbindService(mServiceConnection);
-                    mMessenger = null;
-                    mBound = false;
-                }
+                unBind();
                 break;
 
             case R.id.btn_send_msg:
@@ -115,6 +119,17 @@ public class MessengerActivity extends AppCompatActivity implements View.OnClick
                     e.printStackTrace();
                 }
                 break;
+        }
+    }
+
+    /**
+     * 解绑服务
+     */
+    private void unBind() {
+        if (mBound) {
+            mContext.unbindService(mServiceConnection);
+            mMessenger = null;
+            mBound = false;
         }
     }
 }

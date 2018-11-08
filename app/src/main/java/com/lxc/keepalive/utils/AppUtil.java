@@ -1,5 +1,6 @@
 package com.lxc.keepalive.utils;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -54,5 +55,33 @@ public class AppUtil {
             e.printStackTrace();
             return false;
         }
+    }
+
+    /**
+     * 判断指定服务是否是运行状态
+     * 注意：文档中说明该方法已被废弃，而且获取到的包括系统服务(怎么过滤系统服务还没找到)，
+     * 查询的最大服务数值目前设置为100，因为包括系统服务，以自己小米Note为例，查询出的就有88项，
+     * 数值太小的话runningServicesList中有可能不存在自己写的服务，从而导致判断失误
+     *
+     * @param context
+     * @param serviceName
+     * @return
+     */
+    public static boolean isServiceRunning(Context context, String serviceName) {
+        boolean isRunning = false;
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningServiceInfo> runningServicesList = manager.getRunningServices(100);
+        if (runningServicesList.size() <= 0) {
+            return false;
+        }
+
+        for (int i = 0; i < runningServicesList.size(); i++) {
+            String name = runningServicesList.get(i).service.getClassName().toString();
+            if (serviceName.equals(name)) {
+                isRunning = true;
+                break;
+            }
+        }
+        return isRunning;
     }
 }

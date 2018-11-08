@@ -62,6 +62,14 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // 注意：通过绑定服务方式，在页面销毁时需判断解绑，
+        // 否则会报android.app.ServiceConnectionLeaked错误，类似于Dialog
+        unBind();
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_bind:
@@ -70,11 +78,7 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_unbind:
-                if (mBound) {
-                    mContext.unbindService(mServiceConnection);
-                    mPersonManager = null;
-                    mBound = false;
-                }
+                unBind();
                 break;
 
             case R.id.btn_calculate:
@@ -94,6 +98,17 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
                 }
                 Log.d(TAG, "计算结果为：" + result);
                 break;
+        }
+    }
+
+    /**
+     * 解绑服务
+     */
+    private void unBind() {
+        if (mBound) {
+            mContext.unbindService(mServiceConnection);
+            mPersonManager = null;
+            mBound = false;
         }
     }
 }
