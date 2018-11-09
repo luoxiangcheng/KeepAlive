@@ -8,13 +8,20 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.lxc.keepalive.PersonManager;
 import com.lxc.keepalive.R;
+import com.lxc.keepalive.bean.Person;
 import com.lxc.keepalive.services.MyService4;
+
+import java.util.List;
 
 public class AIDLActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -22,12 +29,15 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
 
     private Context mContext;
 
-    private Button mBtnBind, mBtnUnbind, mBtnCalculate;
+    private Button mBtnBind, mBtnUnbind, mBtnCalculate, mBtnAddPerson;
+    private EditText mEditA, mEditB;
+    private TextView mTvContent;
 
     private PersonManager mPersonManager;
     private ServiceConnection mServiceConnection;
 
     private boolean mBound = false;
+    private int mCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +49,16 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
         mBtnBind = findViewById(R.id.btn_bind);
         mBtnUnbind = findViewById(R.id.btn_unbind);
         mBtnCalculate = findViewById(R.id.btn_calculate);
+        mBtnAddPerson = findViewById(R.id.btn_add_person);
+
+        mEditA = findViewById(R.id.edit_a);
+        mEditB = findViewById(R.id.edit_b);
+        mTvContent = findViewById(R.id.text_content);
 
         mBtnBind.setOnClickListener(this);
         mBtnUnbind.setOnClickListener(this);
         mBtnCalculate.setOnClickListener(this);
+        mBtnAddPerson.setOnClickListener(this);
 
         mServiceConnection = new ServiceConnection() {
             @Override
@@ -83,7 +99,15 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
 
             case R.id.btn_calculate:
                 if (!mBound) {
+                    Toast.makeText(mContext, "服务未连接...", Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "服务未连接");
+                    return;
+                }
+
+                String a = mEditA.getText().toString();
+                String b = mEditB.getText().toString();
+                if (TextUtils.isEmpty(a) || TextUtils.isEmpty(b)) {
+                    Toast.makeText(mContext, "请输入正确的值", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -92,11 +116,32 @@ public class AIDLActivity extends AppCompatActivity implements View.OnClickListe
                 // 那么下面代码还能继续取到值
                 int result = 0;
                 try {
-                    result = mPersonManager.add(1, 3);
+                    result = mPersonManager.add(Integer.parseInt(a), Integer.parseInt(b));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 Log.d(TAG, "计算结果为：" + result);
+                mTvContent.setText("计算结果为：" + result);
+                break;
+
+            case R.id.btn_add_person:
+                if (!mBound) {
+                    Toast.makeText(mContext, "服务未连接...", Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "服务未连接...");
+                    return;
+                }
+
+                mCount++;
+                Person person = new Person("小样" + mCount);
+                try {
+                    mPersonManager.addPerson(person);
+                    // 注意：mPersonManager.getPersonList()指向的对象是同一个，比如在KeepAlive中添加了Person，
+                    // 在MuitlDemo中拿到的list里也包含，反之亦然，这也证明了跨进程通讯
+                    List<Person> personList = mPersonManager.getPersonList();
+                    mTvContent.setText(personList.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
         }
     }

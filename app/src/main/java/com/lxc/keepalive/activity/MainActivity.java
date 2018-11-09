@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             case R.id.btn_stop_service: {
+                // 也可以在开启服务的时候保存一个全局变量，下面直接调用stopService传入该全局变量即可
                 Intent intent = new Intent(mContext, MyService1.class);
                 mContext.stopService(intent);
                 break;

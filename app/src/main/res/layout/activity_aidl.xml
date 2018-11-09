@@ -18,10 +18,35 @@
         android:layout_height="50dp"
         android:text="解绑服务" />
 
+    <EditText
+        android:id="@+id/edit_a"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入值A"
+        android:inputType="number" />
+
+    <EditText
+        android:id="@+id/edit_b"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="请输入值B"
+        android:inputType="number" />
+
     <Button
         android:id="@+id/btn_calculate"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:text="计算" />
+        android:text="计算A+B" />
+
+    <Button
+        android:id="@+id/btn_add_person"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:text="添加Person" />
+
+    <TextView
+        android:id="@+id/text_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
