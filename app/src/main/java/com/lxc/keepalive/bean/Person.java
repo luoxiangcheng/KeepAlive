@@ -49,6 +49,16 @@ public class Person implements Parcelable {
         dest.writeString(name);
     }
 
+    /**
+     * 如果要支持out或者inout的定向tag的话,需要写下面方法
+     * 注意：此处的读值顺序应当是和writeToParcel()方法中一致的
+     *
+     * @param dest
+     */
+    public void readFromParcel(Parcel dest) {
+        name = dest.readString();
+    }
+
     @Override
     public String toString() {
         return "name = " + name;
